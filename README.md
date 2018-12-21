@@ -1,2 +1,7 @@
 # taxon-tools
-Tools for working with taxonomic names
+
+_Tools for working with taxonomic names_
+
+## matchnames
+
+Compares 
