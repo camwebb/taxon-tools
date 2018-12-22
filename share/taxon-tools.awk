@@ -36,8 +36,10 @@ function parse_taxon_name(name, test,    parsed, p, remade) {
   #   nothovar.  prol.  proles race subf.  subsp.  subspec.  subvar.  var,
   #   var.
 
-  # Can't find a way to catch the auct. in the regex, so fix:
+  # Can't find a way to hold lowercase-beginning strings in the author
+  # field (rare). E.g., d'Urv, and auct., so fix one by one:
   parsed = gensub(/\|(auctt?)\|\./,"||\\1.","G",parsed)
+  parsed = gensub(/\|d\|/,"||d","G",parsed)
   
   if (test) {
     # tests

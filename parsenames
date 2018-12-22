@@ -1,0 +1,14 @@
+#!/bin/gawk -f
+
+# (c) Cam Webb, 2018
+# Licence: GPL 3
+
+@include "share/taxon-tools.awk"  # Make sure AWKPATH is set
+
+BEGIN{
+  FS=OFS="|"
+}
+
+{
+  print $1, parse_taxon_name($2, 1)
+}
