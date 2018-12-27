@@ -2,7 +2,9 @@
 
 _Tools for working with taxonomic names_
 
-## matchnames
+## Tools
+
+### `matchnames`
 
 Reconciling small variations in taxonomic names facilitates the
 integration of biological names-based data.  This tool matches a query
@@ -16,7 +18,7 @@ code is given for each type of match.
 
 See the [man](doc/matchnames.md) page for more details.
 
-## parsenames
+### `parsenames`
 
 Split biological names into component parts:
 
@@ -30,3 +32,12 @@ Split biological names into component parts:
 
 Most of the work is done by a single regular expression. See the
 [man](doc/parsenames.md) page for more details.
+
+## Install
+
+All tools are AWK scripts for use with the Gawk flavor of AWK.
+`matchnames` uses the
+[`aregex` Gawk extension](https://github.com/camwebb/gawk-aregex). Before
+installing `matchnames` the `aregex.so` file must be present in a
+directory in `$AWKLIBPATH` (of both user and root).
+
