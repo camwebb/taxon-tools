@@ -16,5 +16,6 @@ install: matchnames parsenames share/taxon-tools.awk
 	mkdir -p $(PREFIX)/share/man/man1
 	cp -f doc/matchnames.1 $(PREFIX)/share/man/man1/.
 
-man: doc/matchnames.md
+man: doc/matchnames.md doc/parsenames.md
 	pandoc -s -t man -o doc/matchnames.1 doc/matchnames.md
+	pandoc -s -t man -o doc/parsenames.1 doc/parsenames.md
