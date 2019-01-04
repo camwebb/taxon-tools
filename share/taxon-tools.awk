@@ -109,7 +109,7 @@ function depunct(x) {
   # gsub (/(\ and\ |&)/,"_",x)
   # test: if (x ~ /[^A-Za-z0-9_]/) print "Warning: non al-num in x: " x
 
-  gsub (/\ and\ /," \\& ", x)
+  gsub (/\ (and|et.?) \ /," \\& ", x)
 
   # Now delete spaces and periods, and all other punctuation other than ()&×:
   gsub(/[^A-Za-z0-9()&×]/,"", x)

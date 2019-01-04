@@ -1,12 +1,12 @@
-ala-exact_|ipn-exact_|exact||Carex||sp1|||(Schischk.) Holub||Carex||sp1|||(Schischk.) Holub
-ala-punct_|ipn-punct_|auto_punct||Carex||sp2|||(Schischk) Holub||Carex||sp2|||(Schischk.) Holub.
-ala-basio+|ipn-basio-|auto_basio+||Carex||sp3|||(Schischk.) Holub||Carex||sp3|||Holub
-ala-basio-|ipn-basio+|auto_basio-||Carex||sp4|||Holub||Carex||sp4|||(Schischk.) Holub
-ala-ex+___|ipn-ex-___|auto_exin+||Carex||sp5|||Fernald ex J.J.Jones||Carex||sp5|||Fernald
-ala-ex-___|ipn-ex+___|auto_exin-||Carex||sp6|||Fernald||Carex||sp6|||Fernald ex J.J.Jones
-ala-in+___|ipn-in-___|auto_exin+||Carex||sp7|||Hult. in J.J.Jones||Carex||sp7|||Hult.
-ala-in-___|ipn-in+___|auto_exin-||Carex||sp8|||Hult||Carex||sp8|||Hult. in J.J.Jones
-ala-mult+_|ipn-mult-_|auto_basexin||Carex||sp9|||(L.) W.H.Drury ex Maguire in J.J.Jones||Carex||sp9|||W.H.Drury
-ala-mult-_|ipn-mult+_|auto_basexin||Carex||spA|||W.H.Drury||Carex||spA|||(L.) W.H.Drury ex Maguire in J.J.Jones
-ala-dst___||no_match||Carex||spB|subsp.|s1|W.H.Drury|||||||
-ala-fuzz__|ipn-fuzz__|manual||Carex||speciesC|subsp.|s1|W.H.Drury||Carex||spcesC|subsp.|s1|W.H.Drury
+listA-exact_|listB-exact_|exact||Carex||sp1|||(Schischk.) Holub||Carex||sp1|||(Schischk.) Holub
+listA-punct_|listB-punct_|auto_punct||Carex||sp2|||(Schischk) Holub||Carex||sp2|||(Schischk.) Holub.
+listA-basio+|listB-basio-|auto_basio+||Carex||sp3|||(Schischk.) Holub||Carex||sp3|||Holub
+listA-basio-|listB-basio+|auto_basio-||Carex||sp4|||Holub||Carex||sp4|||(Schischk.) Holub
+listA-ex+___|listB-ex-___|auto_exin+||Carex||sp5|||Fernald ex J.J.Jones||Carex||sp5|||Fernald
+listA-ex-___|listB-ex+___|auto_exin-||Carex||sp6|||Fernald||Carex||sp6|||Fernald ex J.J.Jones
+listA-in+___|listB-in-___|auto_in+||Carex||sp7|||Hult. in J.J.Jones||Carex||sp7|||Hult.
+listA-in-___|listB-in+___|auto_in-||Carex||sp8|||Hult||Carex||sp8|||Hult. in J.J.Jones
+listA-mult+_|listB-mult-_|auto_basexin||Carex||sp9|||(L.) W.H.Drury ex Maguire in J.J.Jones||Carex||sp9|||W.H.Drury
+listA-mult-_|listB-mult+_|auto_basexin||Carex||spA|||W.H.Drury||Carex||spA|||(L.) W.H.Drury ex Maguire in J.J.Jones
+listA-dst___|listB-dst___|auto_irank||Carex||spB|subsp.|s1|W.H.Drury||Carex||spB|var.|s1|W.H.Drury
+listA-fuzz__|listB-fuzz__|manual??||Carex||speciesC|subsp.|s1|W.H.Drury||Carex||spcesC|subsp.|s1|W.H.Drury

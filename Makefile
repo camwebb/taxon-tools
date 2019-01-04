@@ -8,7 +8,7 @@ check: matchnames parsenames test/listA test/listB test/names test/matchnames.ok
 	bash -c "if [ -z `diff test/parsenames.ok test/out` ] ; then echo '** parsenames PASS **'; else echo '** parsenames FAIL **' ; fi "
 	rm -f test/out
 
-install: matchnames parsenames share/taxon-tools.awk
+install: matchnames parsenames share/taxon-tools.awk doc/matchnames.1 doc/parsenames.1
 	bash -lc 'IFS=":" ; for p in $$AWKLIBPATH ; do if [ -f $${p}/aregex.so ] ; then FOUND="1" ; fi ; done ; if [ -z $$FOUND ] ; then echo "** aregex.so not found in AWKLIBPATH **" && exit 1 ; fi '
 	mkdir -p $(PREFIX)/bin
 	cp -f matchnames parsenames $(PREFIX)/bin/.

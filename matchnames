@@ -34,20 +34,28 @@ BEGIN{
 
     # test for exact string match:
     if (test_eq("exact",   ac)) continue
+
     # test for exact non-punctuation character match:
     if (test_eq("punct",   ac)) continue
+
     # if no author in A and only one author in B, make this default match:
     if (NA[ac] && NOAUTHONE && (test_na(ac))) continue
+
     # start on author variations, first a missing basionym:
     if (test_pm("basio",   ac)) continue
-    # diff basionyms, ok:
-    if (test_eq("basio",   ac)) continue
+
+    # a missing 'in ...':
+    if (test_pm("in",    ac)) continue
+
     # a missing 'ex ...' or 'in ...':
     if (test_pm("exin",    ac)) continue
-    # diff ex/in, ok:
-    if (test_eq("exin",    ac)) continue
+
     # both missing basionym or ex/in:
     if (test_eq("basexin", ac)) continue
+
+    # infraspecific rank difference
+    if (test_eq("irank", ac)) continue
+
     # bypass manual when A is 'auct.':
     if (Auct[ac]) {
       if (CFO) { 
@@ -58,13 +66,16 @@ BEGIN{
         continue
       }
     }
+
     # fuzzy matching and manual checking:
     if (FUZZY && GL[Bfn][G[ac]])
       if (test_fuzzy(ac, line)) continue
+
     # canonoical form only (g + s + ssp)
-    # NB: there will probably be many possible matches; only one will returned
+    # NB: there will probably be many possible matches; only one will return
     if (CFO)
       if (test_eq("cfonly",    ac)) continue
+
     #default
     no_match(ac)
   }
@@ -152,19 +163,31 @@ function read_data(filename,     i, nameN, namex) {
     apply_regex(filename, $I_code, namex, "", "noauth", "") 
     XNA[filename, X[filename, "noauth", $I_code]]++
 
-    # plain depunct no author no subtype
+    # plain depunct no author no subtype no hybrid marks
     apply_regex(filename, $I_code, ($I_g $I_s $I_ssp), "", "cfonly", "") 
+
+    # plain depunct no subtype
+    apply_regex(filename, $I_code, ($I_xg $I_g $I_xs $I_s $I_ssp), "", \
+                "irank", "") 
 
     # depunct, with basionym removed
     apply_regex(filename, $I_code, namex, $I_a, "basio", "^\\([^)]+\\)")
-    # depunct with 'ex' or 'in' removed
+
+    # depunct with 'in' removed
+    apply_regex(filename, $I_code, namex, $I_a, "in", \
+                "\\ [iI]n\\ .*$")
+
+    # depunct with 'ex' and/or 'in' removed
     apply_regex(filename, $I_code, namex, $I_a, "exin", \
                 "\\ ([eE]x|[iI]n)\\ .*$")
+
     # depunct with basio and 'ex' or 'in' removed
     apply_regex(filename, $I_code, namex, $I_a, "basexin", \
                 "(^\\([^)]+\\)|\\ ([eE]x|[iI]n)\\ .*$)")
+
     # auct?
     if ($I_a ~ /^auct\.?$/) Auct[$I_code] = 1
+
     # genus lookup
     G[$I_code] = $I_g
     # genus in Filename test
@@ -195,7 +218,7 @@ function test_na(code) {
   if ((XC[Bfn, "noauth", X[Afn, "noauth", code]]) &&        \
       XNA[Bfn, X[Afn, "noauth", code]] == 1) {
     print code, XC[Bfn, "noauth", X[Afn, "noauth", code]],  \
-      "noauth" , Data[code] ,                               \
+      "auto_noauth" , Data[code] ,                               \
       Data[XC[Bfn, "noauth", X[Afn, "noauth", code]]] >> OUTFILE
     close(OUTFILE)
     return 1
@@ -325,8 +348,11 @@ function test_fuzzy(code, lineno,    j, r, found, nfound, mantype) {
       #   break
       # }
       else if (r == "e") break
-      else if (r ~ /[0-9]+e?/) {
-        mantype = (gsub(/e/,"",r)) ? "manual?" : "manual"
+      else if (r ~ /[0-9]+e*/) {
+        if (match(r, /ee/)) mantype = "manual??"
+        else if (match(r, /e/)) mantype = "manual?"
+        else mantype = "manual"
+        gsub(/e*/,"",r)
         if (found[r]) {
           print code , found[r], mantype , Data[ code ],    \
             Data[found[r]] >> OUTFILE

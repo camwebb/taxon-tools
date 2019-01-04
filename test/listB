@@ -1,12 +1,12 @@
-ipn-exact_||Carex||sp1|||(Schischk.) Holub
-ipn-punct_||Carex||sp2|||(Schischk.) Holub.
-ipn-basio-||Carex||sp3|||Holub
-ipn-basio+||Carex||sp4|||(Schischk.) Holub
-ipn-ex-___||Carex||sp5|||Fernald
-ipn-ex+___||Carex||sp6|||Fernald ex J.J.Jones
-ipn-in-___||Carex||sp7|||Hult.
-ipn-in+___||Carex||sp8|||Hult. in J.J.Jones
-ipn-mult-_||Carex||sp9|||W.H.Drury
-ipn-mult+_||Carex||spA|||(L.) W.H.Drury ex Maguire in J.J.Jones
-ipn-dst___||Carex||spB|var.|s1|W.H.Drury 
-ipn-fuzz__||Carex||spcesC|subsp.|s1|W.H.Drury 
+listB-exact_||Carex||sp1|||(Schischk.) Holub
+listB-punct_||Carex||sp2|||(Schischk.) Holub.
+listB-basio-||Carex||sp3|||Holub
+listB-basio+||Carex||sp4|||(Schischk.) Holub
+listB-ex-___||Carex||sp5|||Fernald
+listB-ex+___||Carex||sp6|||Fernald ex J.J.Jones
+listB-in-___||Carex||sp7|||Hult.
+listB-in+___||Carex||sp8|||Hult. in J.J.Jones
+listB-mult-_||Carex||sp9|||W.H.Drury
+listB-mult+_||Carex||spA|||(L.) W.H.Drury ex Maguire in J.J.Jones
+listB-dst___||Carex||spB|var.|s1|W.H.Drury 
+listB-fuzz__||Carex||spcesC|subsp.|s1|W.H.Drury 
