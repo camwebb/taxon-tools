@@ -1,7 +1,8 @@
 function parse_taxon_name(name, test,    parsed, p, remade) {
   # A single regex for matching against species name strings
   # Argument 1: the name
-  # Argument 2: 1/0 to trigger a series of tests
+  # Argument 2: 1/0 to trigger a series of tests: the output will be skipped
+  #  if the tests fail  
 
   # Output: pipe-delimited genus_hybrid|genus|species_hybrid|species|
   #        rank|infrasp|author_string
@@ -29,8 +30,11 @@ function parse_taxon_name(name, test,    parsed, p, remade) {
 
   # Use unwrapped/long lines to view regex structure (M-x toggle-truncate-lines)
   #                 ( ×    )   ( genus 2+   )   ( ×    )   ( species 2+      )    ( rank                                                                           )    ( infrasp  )    ( author string           )
-  parsed = gensub(/^([×xX]?)\ ?([A-Z][a-zë]+)\ ?([×xX]?)\ ?([a-z\-ﬂ][a-z\-ﬂ]+)?\ ?(var\.|f\.|forma|taxon|fo\.|subsp\.|prol\.|nothovar\.|lus\.|\[infrasp\.unranked\])?\ ?([a-z\-ﬂ_]+)?\ ?([- \[\]().&;,'[:alnum:]]+)?$/, "\\1|\\2|\\3|\\4|\\5|\\6|\\7", "G", name);
+  parsed = gensub(/^([×xX]?)\ ?([A-Z][a-zë]+)\ ?([×xX]?\ |[×X]?)\ ?([a-z\-ﬂ][a-z\-ﬂ]+)?\ ?(var\.|f\.|forma|taxon|fo\.|subsp\.|prol\.|nothovar\.|lus\.|\[infrasp\.unranked\])?\ ?([a-z\-ﬂ_]+)?\ ?([- \[\]().&;,'[:alnum:]]+)?$/, "\\1|\\2|\\3|\\4|\\5|\\6|\\7", "G", name);
 
+  
+  # issue with 'Genus xspecies': 'Genus xanthophylla' becomes a hybrid
+  gsub(/\ *\|/,"|",parsed)
   # Full list of IPNI infra ranks: agamosp.  convar.  f.  forma
   #   [infrasp.unranked] lus.  monstr.  mut.  nm.  nothosubsp.
   #   nothovar.  prol.  proles race subf.  subsp.  subspec.  subvar.  var,
@@ -40,8 +44,17 @@ function parse_taxon_name(name, test,    parsed, p, remade) {
   # field (rare). E.g., d'Urv, and auct., so fix one by one:
   parsed = gensub(/\|(auctt?)\|\./,"||\\1.","G",parsed)
   parsed = gensub(/\|d\|/,"||d","G",parsed)
+
+  # convert hybrid sign
+  gsub(/\|[xX]\|/,"|×|", parsed);
+  gsub(/^[xX]\|/,"×|", parsed);
   
   if (test) {
+    # # Warn about possible 'xanthophylla' cases (no seems to be fixed)
+    # if (name ~ /[^.]\ x[a-z]/)
+    #   print "** Warn: '" name "' may be misparsed:\n"     \
+    #     "         " parsed "  <- parsed\n" > "/dev/stderr"
+    
     # tests
     remade = parsed;
     gsub("\\|"," ",remade);
@@ -49,27 +62,24 @@ function parse_taxon_name(name, test,    parsed, p, remade) {
     gsub(/^\ /,"",remade);
     gsub(/\ $/,"",remade)
     split(parsed, p, "|");
-    if ((parsed !~ /\|/) ||        \
+    if ((parsed !~ /\|/) ||             \
         (p[1] !~ /^[×xX]?$/) ||         \
         (p[2] !~ /^[A-Z][a-zë]+$/) ||                   \
         (p[3] !~ /^[×xX]?$/) ||                             \
         (p[4] !~ /^[a-z\-ﬂ][a-z\-ﬂ]+$/) ||               \
         (p[5] !~ /^([a-z]+\.?|\[infrasp\.unranked\])?$/) ||  \
-        (p[6] !~ /^([a-z\-ﬂ][a-z\-ﬂ_]+$)?/) ||               \
-        (depunct(remade) != depunct(name))) {
+        (p[6] !~ /^([a-z\-ﬂ][a-z\-ﬂ_]+)?$/) ||               \
+        (gensub(/×/,"x","G",depunct(remade)) !=              \
+         gensub(/×/,"x","G",depunct(name)))) {
       # print "'" depunct(remade) "'" > "/dev/stderr";
       # print "'" depunct(name)  "'" > "/dev/stderr";
-      print "** Fail: '" name "' does not match:\n" \
+      print "*  Fail: '" name "' does not match:\n"         \
         "         " parsed "  <- parsed\n"> "/dev/stderr";
       # exit 1;
     }
+    else return parsed
   }
-
-  # convert hybrid sign
-  gsub(/\|[xX]\|/,"|×|", parsed);
-  gsub(/^[xX]\|/,"×|", parsed);
-
-  return parsed;
+  else return parsed;
 }
 
 

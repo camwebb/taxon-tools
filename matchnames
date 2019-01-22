@@ -255,7 +255,7 @@ function apply_regex(AB, code, name, auth, method, regex,   i) {
   XC[AB, method, X[AB, method, code]] = code
   # check for possible duplicate keys. The used match will be the first one
   if ((++XN[AB, method, X[AB, method, code]] > 1) &&
-      (method !~ /(noauth|cfonly)/)) {
+      (method !~ /(noauth|cfonly|irank)/)) {
     print "Warning: " code  \
         " has duplicate " method " form:\n           "  X[AB, method, code]
     # inefficient, but seldom called

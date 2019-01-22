@@ -163,7 +163,7 @@ q
 : Halt matching process. The output file will contain only members of
 List A matched up to this point.
 
-### Suggested rules for manual matching
+## Suggested rules for manual matching
 
 Accept a match at high confidence (**manual**):
 
