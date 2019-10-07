@@ -173,8 +173,8 @@ function read_data(filename,     i, nameN, namex) {
     # plain depunct no author no subtype no hybrid marks
     apply_regex(filename, $I_code, ($I_g $I_s $I_ssp), "", "cfonly", "") 
 
-    # plain depunct no subtype
-    apply_regex(filename, $I_code, ($I_xg $I_g $I_xs $I_s $I_ssp), "", \
+    # plain depunct no subtype 2019-05-14: included auth string
+    apply_regex(filename, $I_code, ($I_xg $I_g $I_xs $I_s $I_ssp $I_a), "", \
                 "irank", "") 
 
     # depunct, with basionym removed
@@ -368,9 +368,18 @@ function test_fuzzy(code, lineno,   i, j, r, found, nfound, mantype) {
         }
         else printf "(number not found)\n"
       }
-
+      else if (r == "h") {
+        print "   1   : Smith <> J. Smith; Smi. <> Sm.; species Smith <> "\
+          "speciies Smith"
+        print "   1e  : Jones <> Smith ex Jones or (Smith) Jones; " \
+          "Smith <> Smith ex Jones;\n         Smith <> Smith & Jones"
+        print "   1ee : J. Smith <> D. Smith; " \
+           "Jones <> Smith & Jones;\n         " \
+           "var. x Sm. <> ssp. x Sm.; auct."
+        print "   e   : Smith <> (Smith) Jones; (Sm.) Blogs <> (Sm.) Jones;"
+      }
       else printf "(try again... q = abort, e = no match, c = codes; " \
-             "1-9+ = pick)\n"
+             " h = help; 1-9+ = pick)\n"
     }
     # delete a ; delete b ; delete code_of_j
     delete found # not always reached, if match is found

@@ -25,16 +25,17 @@ function parse_taxon_name(name, test,    parsed, p, remade) {
 
   
   # Clean bad chars:
-  gsub(/[¿\/]/,"",name) 
+  gsub(/[¿\/"]/,"",name)
+  gsub(/—/,"-",name)
   # see: https://github.com/GlobalNamesArchitecture/gnresolver/issues/112
 
   # Use unwrapped/long lines to view regex structure (M-x toggle-truncate-lines)
   #                 ( ×    )   ( genus 2+   )   ( ×    )   ( species 2+      )    ( rank                                                                           )    ( infrasp  )    ( author string           )
-  parsed = gensub(/^([×xX]?)\ ?([A-Z][a-zë-]+)\ ?([×xX]?\ |[×X]?)\ ?([a-z\-ﬂ][a-z\-ﬂ]+)?\ ?(var\.|f\.|forma|taxon|fo\.|subsp\.|prol\.|nothovar\.|lus\.|\[infrasp\.unranked\])?\ ?([a-z\-ﬂ_]+)?\ ?([- \[\]().&;,'[:alnum:]]+)?$/, "\\1|\\2|\\3|\\4|\\5|\\6|\\7", "G", name);
+  parsed = gensub(/^([×xX]?) ?([A-Z][a-zë-]+) ?([×xX]? |[×X]?) ?([a-z\-ﬂ][a-z\-ﬂ]+)? ?(var\.|f\.|forma|taxon|fo\.|subsp\.|prol\.|nothovar\.|lus\.|\[infrasp\.unranked\])? ?([a-z\-ﬂ_]+)? ?([- \[\]().&;,’'[:alnum:]]+)?$/, "\\1|\\2|\\3|\\4|\\5|\\6|\\7", "G", name);
 
   
   # issue with 'Genus xspecies': 'Genus xanthophylla' becomes a hybrid
-  gsub(/\ *\|/,"|",parsed)
+  gsub(/ *\|/,"|",parsed)
   # Full list of IPNI infra ranks: agamosp.  convar.  f.  forma
   #   [infrasp.unranked] lus.  monstr.  mut.  nm.  nothosubsp.
   #   nothovar.  prol.  proles race subf.  subsp.  subspec.  subvar.  var,
@@ -58,13 +59,13 @@ function parse_taxon_name(name, test,    parsed, p, remade) {
     # tests
     remade = parsed;
     gsub("\\|"," ",remade);
-    gsub(/\ \ +/," ",remade);
-    gsub(/^\ /,"",remade);
-    gsub(/\ $/,"",remade)
+    gsub(/  +/," ",remade);
+    gsub(/^ /,"",remade);
+    gsub(/ $/,"",remade)
     split(parsed, p, "|");
     if ((parsed !~ /\|/) ||             \
         (p[1] !~ /^[×xX]?$/) ||         \
-        (p[2] !~ /^[A-Z][a-zë]+$/) ||                   \
+        (p[2] !~ /^[A-Z][a-zë-]+$/) ||                   \
         (p[3] !~ /^[×xX]?$/) ||                             \
         (p[4] !~ /^[a-z\-ﬂ][a-z\-ﬂ]+$/) ||               \
         (p[5] !~ /^([a-z]+\.?|\[infrasp\.unranked\])?$/) ||  \
@@ -119,7 +120,7 @@ function depunct(x) {
   # gsub (/(\ and\ |&)/,"_",x)
   # test: if (x ~ /[^A-Za-z0-9_]/) print "Warning: non al-num in x: " x
 
-  gsub (/\ (and|et.?) \ /," \\& ", x)
+  gsub (/ (and|et.?)  /," \\& ", x)
 
   # Now delete spaces and periods, and all other punctuation other than ()&×:
   gsub(/[^A-Za-z0-9()&×]/,"", x)
