@@ -182,15 +182,15 @@ function read_data(filename,     i, nameN, namex) {
 
     # depunct with 'in' removed
     apply_regex(filename, $I_code, namex, $I_a, "in", \
-                "\\ [iI]n\\ .*$")
+                " [iI]n .*$")
 
     # depunct with 'ex' and/or 'in' removed
     apply_regex(filename, $I_code, namex, $I_a, "exin", \
-                "\\ ([eE]x|[iI]n)\\ .*$")
+                " ([eE]x|[iI]n) .*$")
 
     # depunct with basio and 'ex' or 'in' removed
     apply_regex(filename, $I_code, namex, $I_a, "basexin", \
-                "(^\\([^)]+\\)|\\ ([eE]x|[iI]n)\\ .*$)")
+                "(^\\([^)]+\\)| ([eE]x|[iI]n) .*$)")
 
     # auct?
     if ($I_a ~ /^auct\.?$/) Auct[$I_code] = 1
@@ -274,9 +274,9 @@ function apply_regex(AB, code, name, auth, method, regex,   i) {
 
 function cleanspaces(x) {
   # X is an external variable
-  gsub(/\ \ */," ", x)
-  gsub(/\ *$/, "" , x)
-  gsub(/^\ */, "" , x)
+  gsub(/  */," ", x)
+  gsub(/ *$/, "" , x)
+  gsub(/^ */, "" , x)
   return x
 }
 
@@ -307,10 +307,10 @@ function test_fuzzy(code, lineno,   i, j, r, found, nfound, mantype) {
     if (nfound == 1) {
       if ((gensub(/(var|subsp)/, "", "G", X[Bfn, "punct", found[1]]) == \
            gensub(/(var|subsp)/, "", "G", X[Afn, "punct", code])) ||
-          ((X[Bfn, "exact", found[1]] ~ /\ (var|subsp|f)\.\ /) && \
-           (X[Afn, "exact", code]    !~ /\ (var|subsp|f)\.\ /)) || \
-          ((X[Bfn, "exact", found[1]] !~ /\ (var|subsp)\.\ /) && \
-           (X[Afn, "exact", code]    ~ /\ (var|subsp)\.\ /)))
+          ((X[Bfn, "exact", found[1]] ~ / (var|subsp|f)\. /) && \
+           (X[Afn, "exact", code]    !~ / (var|subsp|f)\. /)) || \
+          ((X[Bfn, "exact", found[1]] !~ / (var|subsp)\. /) && \
+           (X[Afn, "exact", code]    ~ / (var|subsp)\. /)))
     {
         # no_match(code)
         return 0

@@ -116,7 +116,10 @@ function depunct(x) {
 
   # # for using "agrep -w" there can only be alphanumerics and underscore.
   # # the only key non-punct characters to maintain are "()" and "&"
-  # gsub (/[()]/,"_",x)
+  # 2019-11-11: no! ( and ) are regex symbols! Not a problem if they are
+  # balanced (because there's no | in between), but if one is missing, the
+  # regex is flawed. Need to convert these two.
+  gsub (/[()]/,"_",x)
   # gsub (/(\ and\ |&)/,"_",x)
   # test: if (x ~ /[^A-Za-z0-9_]/) print "Warning: non al-num in x: " x
 
@@ -128,6 +131,6 @@ function depunct(x) {
 
   # test
   x = tolower(x)
-  if (x ~ /[^a-z()&]×/) print "Warning: non 'a-z()&' in x: " x
+  if (x ~ /[^a-z&]×/) print "Warning: non 'a-z&' in x: " x
   return x
 }
