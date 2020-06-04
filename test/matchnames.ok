@@ -9,4 +9,4 @@ listA-in-___|listB-in+___|auto_in-||Carex||sp8|||Hult||Carex||sp8|||Hult. in J.J
 listA-mult+_|listB-mult-_|auto_basexin||Carex||sp9|||(L.) W.H.Drury ex Maguire in J.J.Jones||Carex||sp9|||W.H.Drury
 listA-mult-_|listB-mult+_|auto_basexin||Carex||spA|||W.H.Drury||Carex||spA|||(L.) W.H.Drury ex Maguire in J.J.Jones
 listA-dst___|listB-dst___|auto_irank||Carex||spB|subsp.|s1|W.H.Drury||Carex||spB|var.|s1|W.H.Drury
-listA-fuzz__|listB-fuzz__|manual??||Carex||speciesC|subsp.|s1|W.H.Drury||Carex||spcesC|subsp.|s1|W.H.Drury
+listA-fuzz__|listB-fuzz__|auto_fuzzy||Carex||speciesC|subsp.|s1|W.H.Drury||Carex||spcesC|subsp.|s1|W.H.Drury

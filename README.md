@@ -18,6 +18,20 @@ code is given for each type of match.
 
 See the [man](doc/matchnames.md) page for more details.
 
+`matchnames` can either use an internal function for calculating fuzzy
+matches (`levenstein()`; the default), or the external
+[`aregex`](https://github.com/camwebb/gawk-aregex) extension library,
+part of the `gawkextlib` project. I think the latter should be
+significantly quicker, but I have not yet quantified it. The former
+seems to work fine on small to medium datasets, and is more
+portable. To make the latter, use:
+
+    make aregexversion
+
+To run this version, the `aregex.so` file must be present in a
+directory in `$AWKLIBPATH` (of both user (and root?)).  See:
+<https://github.com/camwebb/gawk-aregex>.
+
 ### `parsenames`
 
 Split biological names into component parts:
@@ -33,11 +47,32 @@ Split biological names into component parts:
 Most of the work is done by a single regular expression. See the
 [man](doc/parsenames.md) page for more details.
 
-## Install
+## Installation
 
 All tools are AWK scripts for use with the Gawk flavor of AWK.
-`matchnames` uses the
-[`aregex` Gawk extension](https://github.com/camwebb/gawk-aregex). Before
-installing `matchnames` the `aregex.so` file must be present in a
-directory in `$AWKLIBPATH` (of both user and root).
+
+### Linux
+
+Make sure environmental variables are set (e.g., in `.bashrc`): 
+
+    export AWKPATH=.:/usr/share/awk/:/usr/local/share/awk/
+    export AWKLIBPATH=.:/usr/lib/gawk/:/usr/local/lib/gawk/
+    
+and that `/usr/local/bin/` is in $PATH. E.g.:
+
+    export PATH=/usr/local/bin/:$PATH
+
+Install with:
+
+    make check
+    make install
+
+Commands `matchnames` and `parsenames` should now work anywhere.
+
+### Mac
+
+Should be the same as Linux, but you will need to install GNU Gawk
+first (via, e.g., Homebrew).  The MacOS `awk` is not `gawk`.
+
+
 

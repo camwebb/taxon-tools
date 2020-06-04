@@ -1,6 +1,6 @@
-% MATCHNAMES(1) taxon-tools version 1.0 | Taxon-tools manual
+% MATCHNAMES(1) taxon-tools version 1.1 | Taxon-tools manual
 % 
-% Dec 27 2018
+% Jun 04 2020
 
 # NAME
 
@@ -9,7 +9,7 @@ matchnames - matches two lists of taxonomic names
 # SYNOPSIS
 
 matchnames -a query_names_file -b ref_names_file -o outfile \
-            [ -f [ -e fuzzy_error ]] [ -1 -c -n ]
+            [ -f | -F [ -e fuzzy_error ]] [ -1 -c -n -q ]
 
 # DESCRIPTION
 
@@ -40,6 +40,10 @@ code is given for each type of match.
 : Use fuzzy matching with manual decision on names not automatically
 matching.
 
+-F
+: Use fuzzy matching without manual decision on names not automatically
+matching. All fuzzy matches are included in the output.
+
 -e
 : Max Levenshtein distance to allow during fuzzy matching. Default: 10
 total insertions, deletions and substitutions.
@@ -55,6 +59,9 @@ allow such a match.
 
 -n
 : Append results to output file rather than deleting it before a run.
+
+-q
+: Quiet
 
 # FILE FORMATS
 
@@ -124,8 +131,11 @@ allowed. Match code: **auto_basexin**.
 8. If all elements of the name match except for the infraspecific rank, 
 record the match as: **auto_irank**.
 
-9. If there are any reference names (list B) that may match the query name 
-approximately, move to “manual matching” (below). Match code: **manual**, **manual?** or **manual??**.
+9. If there are any reference names (list B) that may match the query
+name approximately, move to “manual matching” (below). Match code:
+**manual**, **manual?** or **manual??**.  Alternatively, if `-F` has
+been specified, output all fuzzy matches with match code
+**auto_fuzzy**.
 
 10. If a name fails manual matching, but option _-c_ has been given,
 allow a match by “canonical form” only, i.e., genus plus specific

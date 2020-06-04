@@ -1,12 +1,18 @@
 PREFIX = /usr/local
 
+aregexversion: matchnames
+	bash -lc 'IFS=":" ; for p in $$AWKLIBPATH ; do if [ -f $${p}/aregex.so ] ; then FOUND="1" ; fi ; done ; if [ -z $$FOUND ] ; then echo "** aregex.so not found in AWKLIBPATH **" && exit 1 ; fi '
+	cp matchnames matchnames.ori
+	sed -i -E 's/#@> //g' matchnames
+	sed -i -E 's/^(.*#@<)/#\1/g' matchnames
+
 check: matchnames parsenames test/listA test/listB test/names test/matchnames.ok test/parsenames.ok
-	./matchnames -a test/listA -b test/listB -o test/out -f
-	bash -c "if [ -z `diff test/matchnames.ok test/out` ] ; then echo '** matchnames PASS **'; else echo '** matchnames FAIL **' ; fi "
-	rm -f test/out
-	cat test/names | ./parsenames > test/out
-	bash -c "if [ -z `diff test/parsenames.ok test/out` ] ; then echo '** parsenames PASS **'; else echo '** parsenames FAIL **' ; fi "
-	rm -f test/out
+	@./matchnames -a test/listA -b test/listB -o test/out -F
+	@bash -c "if [ `diff test/matchnames.ok test/out | wc | gawk '{print $$1}'` -eq 0 ] ; then echo '** matchnames PASS **'; else echo '** matchnames FAIL **' ; fi "
+	@rm -f test/out
+	@cat test/names | ./parsenames > test/out
+	@bash -c "if [ `diff test/parsenames.ok test/out | wc | gawk '{print $$1}'` -eq 0 ] ; then echo '** parsenames PASS **'; else echo '** parsenames FAIL **' ; fi "
+	@rm -f test/out
 
 install: matchnames parsenames share/taxon-tools.awk doc/matchnames.1 doc/parsenames.1
 	bash -lc 'IFS=":" ; for p in $$AWKLIBPATH ; do if [ -f $${p}/aregex.so ] ; then FOUND="1" ; fi ; done ; if [ -z $$FOUND ] ; then echo "** aregex.so not found in AWKLIBPATH **" && exit 1 ; fi '

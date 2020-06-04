@@ -9,13 +9,14 @@
 
 ## Dependencies:
 # 1. GNU gawk v.4+
-# 2. aregex Gawkextlib extension
+# 2. aregex Gawkextlib extension, for the amatch() version
 
 ## Conventions:
 # Variables shared among functions and main BEGIN{} start with Capital letters
 
-@load "aregex"
-@include "taxon-tools.awk"  # Make sure AWKPATH is set
+
+#@> @load "aregex"
+@include "taxon-tools.awk"  # for depunct(); Make sure AWKPATH is set
 
 BEGIN{
   config()
@@ -294,7 +295,8 @@ function test_fuzzy(code, lineno,   i, j, r, found, nfound, mantype) {
   nfound = 0
   # for each B file code present in the same genus as (A) code
   for (i in Gh[Bfn][G[code]]) {
-    if (amatch(X[Bfn, "punct", i], ("^" X[Afn, "punct", code] "$"), FUZZERR))
+    if (levenshtein(X[Bfn,"punct",i], X[Afn,"punct",code]) <= FUZZERR) #@<
+    #@> if (amatch(X[Bfn,"punct",i], ("^" X[Afn,"punct",code] "$"),FUZZERR))
       found[++nfound] = i
   }
   # Todo, add another array and sort it: the potential matches are in order
@@ -393,7 +395,8 @@ function test_allfuzzy(code,    i, foundone) {
 
   # for each B file code present in the same genus as (A) code
   for (i in Gh[Bfn][G[code]]) {
-    if (amatch(X[Bfn, "punct", i], ("^" X[Afn, "punct", code] "$"), FUZZERR)) {
+    if (levenshtein(X[Bfn,"punct",i], X[Afn,"punct",code]) <= FUZZERR) { #@<
+    #@> if (amatch(X[Bfn,"punct",i], ("^" X[Afn, "punct",code] "$"),FUZZERR)) {
       foundone = 1
       print code , i, "auto_fuzzy" , Data[ code ], Data[i] >> OUTFILE
       close(OUTFILE)
@@ -402,3 +405,38 @@ function test_allfuzzy(code,    i, foundone) {
   if (foundone) return 1
   else return 0
 }
+
+
+function levenshtein(i1, i2,    \
+         s1, s2, s1len, s2len, x, y, lastdiag, olddiag, column) {
+  # Returns the Levenshtein distance between two strings, with insert, delete
+  #   and substitute costs of 1. 
+  # Adapted from the C code at: https://en.wikibooks.org/w/index.php?\
+  #   title=Algorithm_Implementation/Strings/Levenshtein_distance
+
+  split(i1, s1, "")
+  split(i2, s2, "")
+  s1len = length(s1)
+  s2len = length(s2)
+  for (y = 1; y <= s1len; y++)
+    column[y] = y
+  for (x = 1; x <= s2len; x++) {
+    column[0] = x
+    lastdiag = x-1
+    for (y = 1 ; y <= s1len; y++) {
+      olddiag = column[y]
+      column[y] = min3(column[y] + 1,   \
+                       column[y-1] + 1, \
+                       lastdiag + (s1[y-1] == s2[x-1] ? 0 : 1) )
+      lastdiag = olddiag
+    }
+  }
+  return column[s1len]
+}
+
+
+function min3(a, b, c) {
+  # Helper function for levenshtein()
+  return (a < b ? (a < c ? a : c) : (b < c ? b : c))
+}
+

@@ -85,6 +85,8 @@ function parse_taxon_name(name, test,    parsed, p, remade) {
 
 
 function depunct(x) {
+  # Removes punctuation and flattens diacritics
+
   # the master copy of this library is now here in taxon-tools.awk
   
   # See here for data:
