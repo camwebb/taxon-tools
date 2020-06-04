@@ -74,5 +74,3 @@ Commands `matchnames` and `parsenames` should now work anywhere.
 Should be the same as Linux, but you will need to install GNU Gawk
 first (via, e.g., Homebrew).  The MacOS `awk` is not `gawk`.
 
-
-
