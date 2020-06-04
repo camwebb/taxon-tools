@@ -74,3 +74,29 @@ Commands `matchnames` and `parsenames` should now work anywhere.
 Should be the same as Linux, but you will need to install GNU Gawk
 first (via, e.g., Homebrew).  The MacOS `awk` is not `gawk`.
 
+### Windows
+
+`matchnames` can be easily run using Gawk cross-compiled for Windows,
+and the `CMD.EXE` command prompt:
+
+ * Download Gawk from
+   [Ezwinports](https://sourceforge.net/projects/ezwinports/files/) and unzip
+   on the Desktop.
+ * Download the latest `taxon-tools` release from github: 
+   <https://github.com/camwebb/taxon-tools/releases/>, and unzip on the 
+   Desktop.
+ * In the menubar search box, type `CMD.EXE` and open it. This is the old
+   DOS commandline.
+ * Type these commands (altering the verson numbers if different. The
+   latest `CMD.EXE` has command line TAB-completion which speeds
+   things up. Basic commands: `dir` = view directory files, `cd` =
+   change directory, `copy`, `more` = see file contents.
+
+    cd Desktop\work\taxon-tools-1.1\taxon-tools-1.1
+    dir
+    copy share\taxon-tools.awk .
+    ..\..\gawk-5.1.0-w32-bin\bin\gawk.exe -f matchnames
+    ..\..\gawk-5.1.0-w32-bin\bin\gawk.exe -f matchnames -a test\listA -b test\listB -o out.txt -F
+    dir
+    more out.txt
+

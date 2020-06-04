@@ -123,8 +123,12 @@ function read_args(    arg) {
   }
 
   # Delete existing OUTFILE
-  if (!APPEND)
-    system("rm -f " OUTFILE)
+  if (!APPEND) {
+    ## changed, for portability to windows
+    # system("rm -f " OUTFILE)
+    printf "" > OUTFILE
+    close(OUTFILE)
+  }
 }
 
 function read_data(filename,     i, nameN, namex) {
