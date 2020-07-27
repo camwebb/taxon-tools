@@ -53,7 +53,8 @@ All tools are AWK scripts for use with the Gawk flavor of AWK.
 
 ### Linux
 
-Make sure environmental variables are set (e.g., in `.bashrc`): 
+For the aregex version, make sure environmental variables are set
+(e.g., in `.bashrc`):
 
     export AWKPATH=.:/usr/share/awk/:/usr/local/share/awk/
     export AWKLIBPATH=.:/usr/lib/gawk/:/usr/local/lib/gawk/
@@ -68,6 +69,10 @@ Install with:
     make install
 
 Commands `matchnames` and `parsenames` should now work anywhere.
+
+For the basic version, just make sure gawk is at: `/bin/gawk`, or that
+`/bin/gawk` is a symlink pointing to gawk, or edit the first line of
+`matchnames` and `parsenames` to point to gawk.
 
 ### Mac
 
@@ -86,17 +91,17 @@ and the `CMD.EXE` command prompt:
    <https://github.com/camwebb/taxon-tools/releases/>, and unzip on the 
    Desktop.
  * In the menubar search box, type `CMD.EXE` and open it. This is the old
-   DOS commandline.
- * Type these commands (altering the verson numbers if different. The
-   latest `CMD.EXE` has command line TAB-completion which speeds
-   things up. Basic commands: `dir` = view directory files, `cd` =
-   change directory, `copy`, `more` = see file contents.
+   DOS commandline. MS `Powershell` can also be used.
 
-    cd Desktop\work\taxon-tools-1.1\taxon-tools-1.1
+Type these commands (altering the verson numbers if different). The
+latest `CMD.EXE` has command line TAB-completion which speeds things
+up. Basic commands: `dir` = view directory files, `cd` = change
+directory, `copy`, `more` = see file contents.
+
+    cd Desktop\taxon-tools-1.1
     dir
-    copy share\taxon-tools.awk .
-    ..\..\gawk-5.1.0-w32-bin\bin\gawk.exe -f matchnames
-    ..\..\gawk-5.1.0-w32-bin\bin\gawk.exe -f matchnames -a test\listA -b test\listB -o out.txt -F
+    ..\gawk-5.1.0-w32-bin\bin\gawk.exe -f matchnames
+    ..\gawk-5.1.0-w32-bin\bin\gawk.exe -f matchnames -a test\listA -b test\listB -o out.txt -F
     dir
     more out.txt
 

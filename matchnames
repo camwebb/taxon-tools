@@ -16,7 +16,8 @@
 
 
 #@> @load "aregex"
-@include "taxon-tools.awk"  # for depunct(); Make sure AWKPATH is set
+#   @include "taxon-tools.awk"  # for depunct(); Make sure AWKPATH is set
+#   2020-07-27: depunct now in the file
 
 BEGIN{
   config()
@@ -438,9 +439,63 @@ function levenshtein(i1, i2,    \
   return column[s1len]
 }
 
-
 function min3(a, b, c) {
   # Helper function for levenshtein()
   return (a < b ? (a < c ? a : c) : (b < c ? b : c))
+}
+
+function depunct(x) {
+  # Removes punctuation and flattens diacritics
+
+  # History:
+  #  The master copy of this library was in share/taxon-tools.awk
+  #  2020-07-27: copied directly here. Unchanged.
+  
+  # See here for data:
+  # https://code.activestate.com/recipes/251871-latin1-to-ascii-the-
+  #   unicode-hammer/
+  # https://stackoverflow.com/questions/1382998/latin-1-to-ascii#1383721
+  gsub(/[ùúûü]/,"u", x)
+  gsub(/[Ñ]/,"N", x)
+  gsub(/[ÀÁÂÃÄÅ]/,"A", x)
+  gsub(/[ìíîï]/,"i", x)
+  gsub(/[ÒÓÔÕÖØ]/,"O", x)
+  gsub(/[Ç]/,"C", x)
+  gsub(/[æ]/,"ae", x)
+  gsub(/[Ð]/,"D", x)
+  gsub(/[ýÿ]/,"y", x)
+  gsub(/[ÈÉÊË]/,"E", x)
+  gsub(/[ñ]/,"n", x)
+  gsub(/[àáâãäå]/,"a", x)
+  gsub(/[òóôõöø]/,"o", x)
+  gsub(/[ß]/,"b", x)
+  gsub(/[ÙÚÛÜ]/,"U", x)
+  gsub(/[Þþ]/,"p", x)
+  gsub(/[çč]/,"c", x)
+  gsub(/[ÌÍÎÏ]/,"I", x)
+  gsub(/[ð]/,"d", x)
+  gsub(/[èéêë]/,"e", x)
+  gsub(/[Æ]/,"Ae", x)
+  gsub(/[Ý]/,"Y", x)
+
+  # # for using "agrep -w" there can only be alphanumerics and underscore.
+  # # the only key non-punct characters to maintain are "()" and "&"
+  # 2019-11-11: no! ( and ) are regex symbols! Not a problem if they are
+  # balanced (because there's no | in between), but if one is missing, the
+  # regex is flawed. Need to convert these two.
+  gsub (/[()]/,"_",x)
+  # gsub (/(\ and\ |&)/,"_",x)
+  # test: if (x ~ /[^A-Za-z0-9_]/) print "Warning: non al-num in x: " x
+
+  gsub (/ (and|et.?)  /," \\& ", x)
+
+  # Now delete spaces and periods, and all other punctuation other than ()&×:
+  gsub(/[^A-Za-z0-9()&×]/,"", x)
+  # [ was gsub(/[ .]/,"", x) ; gsub(/"/,"", x) ]
+
+  # test
+  x = tolower(x)
+  if (x ~ /[^a-z&]×/) print "Warning: non 'a-z&' in x: " x
+  return x
 }
 
