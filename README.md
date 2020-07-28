@@ -18,19 +18,13 @@ code is given for each type of match.
 
 See the [man](doc/matchnames.md) page for more details.
 
-`matchnames` can either use an internal function for calculating fuzzy
-matches (`levenstein()`; the default), or the external
+`matchnames` can either use i) an internal function for calculating
+fuzzy matches (`levenstein()`; **the default**), or ii) the external
 [`aregex`](https://github.com/camwebb/gawk-aregex) extension library,
-part of the `gawkextlib` project. I think the latter should be
-significantly quicker, but I have not yet quantified it. The former
-seems to work fine on small to medium datasets, and is more
-portable. To make the latter, use:
-
-    make aregexversion
-
-To run this version, the `aregex.so` file must be present in a
-directory in `$AWKLIBPATH` (of both user (and root?)).  See:
-<https://github.com/camwebb/gawk-aregex>.
+part of the `gawkextlib` project. The latter is ~8 times faster (e.g.,
+4.2 s vs. 35.3 s on a no-user-input fuzzy match (`-F`) with the `-a`
+file of 2,823 lines and the `-b` file of 19,435 lines, fuzzy error of
+5), but less portable and longer to install.  
 
 ### `parsenames`
 
@@ -53,26 +47,40 @@ All tools are AWK scripts for use with the Gawk flavor of AWK.
 
 ### Linux
 
-For the aregex version, make sure environmental variables are set
-(e.g., in `.bashrc`):
+For the **default** (no dependency) version, the `matchnames` and
+`parsenames` scripts can be copied wherever needed, or placed
+somewhere in the user’s `PATH` environmental variable.  Just make sure
+`gawk` is at: `/bin/gawk`, or that `/bin/gawk` is a symlink pointing
+to `gawk`, or edit the first line of `matchnames` and `parsenames` to
+point to `gawk`.
 
-    export AWKPATH=.:/usr/share/awk/:/usr/local/share/awk/
-    export AWKLIBPATH=.:/usr/lib/gawk/:/usr/local/lib/gawk/
-    
-and that `/usr/local/bin/` is in $PATH. E.g.:
-
-    export PATH=/usr/local/bin/:$PATH
-
-Install with:
+For system-wide installation, install with:
 
     make check
     make install
 
-Commands `matchnames` and `parsenames` should now work anywhere.
+and make sure that `/usr/local/bin/` is in $PATH. E.g.:
 
-For the basic version, just make sure gawk is at: `/bin/gawk`, or that
-`/bin/gawk` is a symlink pointing to gawk, or edit the first line of
-`matchnames` and `parsenames` to point to gawk.
+    export PATH=/usr/local/bin/:$PATH
+
+For the (faster) **aregex version**, first build and install
+`aregex.so`; see
+<https://github.com/camwebb/gawk-aregex>. Environmental variable
+`$AWKLIBPATH` must include the install directory
+(`/usr/local/lib/gawk/` by default), E.g., in `.bashrc`:
+
+    export AWKLIBPATH=.:/usr/lib/gawk/:/usr/local/lib/gawk/
+    export PATH=/usr/local/bin/:$PATH
+
+Then:
+
+    make aregexversion
+    make check
+    make install
+
+To check and run this version. Commands `matchnames` and `parsenames`
+should now work anywhere.
+
 
 ### Mac
 

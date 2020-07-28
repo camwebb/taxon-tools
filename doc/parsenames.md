@@ -8,7 +8,7 @@ parsenames - parse taxonomic names into component parts
 
 # SYNOPSIS
 
-matchnames names_file > parsed_output
+parsenames names_file > parsed_output
 
 # DESCRIPTION
 
