@@ -47,6 +47,7 @@ function parse_taxon_name(name, test,    parsed, p, remade) {
   
   # Clean bad chars:
   gsub(/[¿\/"]/,"",name)
+  gsub(/ /," ",name)
   gsub(/—/,"-",name)
   # see: https://github.com/GlobalNamesArchitecture/gnresolver/issues/112
 
