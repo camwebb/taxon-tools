@@ -75,6 +75,9 @@ sign (“×”), 5. Specific epithet, 6. Infraspecific rank signifier
 string. This parsing of names can be generated with the **parsenames**
 tool.
 
+Note that each line of both the ‘A’ list and the ‘B’ list must have a
+code value that is unique in the combined set of A and B code values.
+
 ## Output file format
 
 Each line represents a single name from the query list (list
