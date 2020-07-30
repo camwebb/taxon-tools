@@ -146,7 +146,7 @@ function read_data(filename,     i, nameN, namex) {
     
     # check for duplicate code
     if (++CodeN[$I_code] > 1) {
-      print "Code '" $I_code "' is a duplicate..."
+      print "ID code '" $I_code "' is a duplicate..."
       exit 1
     }
 
