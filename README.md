@@ -123,7 +123,6 @@ If needed, parse names first:
     cat rawnamesA
       ...
       x-234|Foogenus x barspecies var. foosubsp (L.) F. Bar 
-          cat rawnames
     parsenames rawnamesA > listA
     cat listA
       ...
