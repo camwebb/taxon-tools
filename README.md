@@ -16,7 +16,9 @@ approximate (fuzzy) matching to identify variations (e.g.,
 misspelling) in binomial names and author strings. An output status
 code is given for each type of match.
 
-See the [man](doc/matchnames.md) page for more details.
+See this [blog](http://alaskaflora.org/pages/blog3.html), this
+[poster](http://alaskaflora.org/files/webb_BSA2020.pdf), and the
+[man](doc/matchnames.md) page for more details.
 
 `matchnames` can either use i) an internal function for calculating
 fuzzy matches (`levenstein()`; **the default**), or ii) the external
@@ -43,7 +45,8 @@ Most of the work is done by a single regular expression. See the
 
 ## Installation
 
-All tools are AWK scripts for use with the Gawk flavor of AWK.
+All tools are Awk scripts for use with the
+[Gawk](https://www.gnu.org/software/gawk/) flavor of Awk.
 
 ### Linux
 
@@ -78,7 +81,7 @@ Then:
     make check
     make install
 
-To check and run this version. Commands `matchnames` and `parsenames`
+to check and run this version. Commands `matchnames` and `parsenames`
 should now work anywhere.
 
 
@@ -113,3 +116,29 @@ directory, `copy`, `more` = see file contents.
     dir
     more out.txt
 
+## Running the programs
+
+If needed, parse names first:
+
+    cat rawnamesA
+      ...
+      x-234|Foogenus x barspecies var. foosubsp (L.) F. Bar 
+          cat rawnames
+    parsenames rawnamesA > listA
+    cat listA
+      ...
+      x-234||Foogenus|×|barspecies|var.|foosubsp|(L.) F. Bar
+    parsenames rawnamesB > listB
+
+Then match the names:
+
+    matchnames -a listA -b listB -o matchedA -F -q
+    ------------------------------------------------------- x-234 --( 1/ 1)
+       Foogenus × barspecies var. foosubsp (L.) F. Bar
+    1: Foogenus × barspcies var. foosubsp (L.) F. Bar
+    2: Foogenus × barspecies var. foosubsp L.
+    > 1
+    ...
+    cat matchedA
+    x-234|y-235|manual||Foogenus|×|barspecies|var.|foosubsp|(L.) F. Bar|\
+      |Foogenus|×|barspcies|var.|foosubsp|(L.) F. Bar
