@@ -9,10 +9,10 @@ aregexversion: matchnames
 
 check: matchnames parsenames test/listA test/listB test/names test/matchnames.ok test/parsenames.ok
 	@./matchnames -a test/listA -b test/listB -o test/out -F
-	@bash -c "if [ `diff test/matchnames.ok test/out | wc | gawk '{print $$1}'` -eq 0 ] ; then echo '** matchnames PASS **'; else echo '** matchnames FAIL **' ; fi "
+	@diff test/matchnames.ok test/out && echo '** matchnames PASS **' || echo '** matchnames FAIL **'
 	@rm -f test/out
 	@cat test/names | ./parsenames > test/out
-	@bash -c "if [ `diff test/parsenames.ok test/out | wc | gawk '{print $$1}'` -eq 0 ] ; then echo '** parsenames PASS **'; else echo '** parsenames FAIL **' ; fi "
+	@diff test/parsenames.ok test/out && echo '** parsenames PASS **' || echo '** parsenames FAIL **'
 	@rm -f test/out
 
 install: matchnames parsenames share/taxon-tools.awk man
