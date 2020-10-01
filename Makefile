@@ -1,7 +1,7 @@
 PREFIX = /usr/local
 
 aregexversion: matchnames
-	bash -lc 'IFS=":" ; for p in $$AWKLIBPATH ; do if [ -f $${p}/aregex.so ] ; then FOUND="1" ; fi ; done ; if [ -z $$FOUND ] ; then echo "** aregex.so not found in AWKLIBPATH **" && exit 1 ; fi '
+	gawk -l aregex --version | sed '/^Copyright/,$$ d'
 	cp matchnames matchnames.ori
 	sed -i -E 's/#@> //g' matchnames
 	sed -i -E 's/^(.*#@<)/#\1/g' matchnames
@@ -15,7 +15,7 @@ check: matchnames parsenames test/listA test/listB test/names test/matchnames.ok
 	@rm -f test/out
 
 install: matchnames parsenames share/taxon-tools.awk man
-	# bash -lc 'IFS=":" ; for p in $$AWKLIBPATH ; do if [ -f $${p}/aregex.so ] ; then FOUND="1" ; fi ; done ; if [ -z $$FOUND ] ; then echo "** aregex.so not found in AWKLIBPATH **" && exit 1 ; fi '
+	#@gawk -l aregex --version > | sed '/^Copyright/,$$ d'
 	mkdir -p $(PREFIX)/bin
 	cp -f matchnames parsenames $(PREFIX)/bin/.
 	mkdir -p $(PREFIX)/share/awk
