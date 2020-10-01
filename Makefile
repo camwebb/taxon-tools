@@ -24,6 +24,7 @@ install: matchnames parsenames share/taxon-tools.awk man
 	cp -f doc/matchnames.1 $(PREFIX)/share/man/man1/.
 	cp -f doc/parsenames.1 $(PREFIX)/share/man/man1/.
 
-man: doc/matchnames.md doc/parsenames.md
-	pandoc -s -t man -o doc/matchnames.1 doc/matchnames.md
-	pandoc -s -t man -o doc/parsenames.1 doc/parsenames.md
+PHONY: man
+man: doc/matchnames.1 doc/parsenames.1
+%.1: %.md
+	pandoc --eol=lf -s -t man -o $@ $<
