@@ -295,8 +295,7 @@ function test_fuzzy(code, lineno,   i, j, r, rc, found, nfound, mantype) {
   nfound = 0
   # for each B file code present in the same genus as (A) code
   for (i in Gh[Bfn][G[code]]) {
-    if (levenshtein(X[Bfn,"punct",i], X[Afn,"punct",code]) <= FUZZERR) #@<
-    #@> if (amatch(X[Bfn,"punct",i], ("^" X[Afn,"punct",code] "$"),FUZZERR))
+    if (do_match(X[Bfn,"punct",i], X[Afn,"punct",code]))
       found[++nfound] = i
   }
   # Todo, add another array and sort it: the potential matches are in order
@@ -395,8 +394,7 @@ function test_allfuzzy(code,    i, foundone) {
 
   # for each B file code present in the same genus as (A) code
   for (i in Gh[Bfn][G[code]]) {
-    if (levenshtein(X[Bfn,"punct",i], X[Afn,"punct",code]) <= FUZZERR) { #@<
-    #@> if (amatch(X[Bfn,"punct",i], ("^" X[Afn, "punct",code] "$"),FUZZERR)) {
+    if (do_match(X[Bfn,"punct",i], X[Afn,"punct",code])) {
       foundone = 1
       print code , i, "auto_fuzzy" , Data[ code ], Data[i] >> OUTFILE
     }
@@ -491,6 +489,13 @@ function depunct(x) {
   x = tolower(x)
   if (x ~ /[^a-z&]×/) print "Warning: non 'a-z&' in x: " x
   return x
+}
+
+function do_match(i1,i2) {
+  if("amatch" in FUNCTAB)
+    return amatch(i1, "^" i2 "$") > 0
+  else
+    return (levenshtein(i1,i2) <= FUZZERR)
 }
 
 function err_exit(rc, msg) {
