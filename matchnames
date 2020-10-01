@@ -117,9 +117,9 @@ function read_args(    arg) {
     else if (ARGV[arg] == "-q") QUIET  = 1
   }
   if (!Afn || !Bfn || !OUTFILE || ARGC == 1 || ((FUZZY) && (ALLFUZZY))) {
-    print "Usage:    match_names -a query_names_file -b " \
+    print "Usage:    matchnames -a query_names_file -b " \
       "ref_names_file -o outfile \\\n" \
-      "            [ -f | -F [ -e fuzz_error ]] [ -1 -c -n -q ]"
+      "            [ -f | -F [ -e fuzz_error ]] [ -1 -c -n -q ] [-l aregex]"
     exit 1
   }
 

@@ -7,8 +7,8 @@ aregexversion: matchnames
 	sed -i -E 's/#@> //g' matchnames
 	sed -i -E 's/^(.*#@<)/#\1/g' matchnames
 
-check: matchnames parsenames test/listA test/listB test/names test/matchnames.ok test/parsenames.ok
-	@./matchnames -a test/listA -b test/listB -o test/out -F
+check: matchnames.sh parsenames test/listA test/listB test/names test/matchnames.ok test/parsenames.ok
+	@./matchnames.sh -a test/listA -b test/listB -o test/out -F
 	@diff test/matchnames.ok test/out && echo '** matchnames PASS **' || echo '** matchnames FAIL **'
 	@rm -f test/out
 	@cat test/names | ./parsenames > test/out
