@@ -131,14 +131,15 @@ function read_args(    arg) {
   }
 }
 
-function read_data(filename,     i, nameN, namex) {
+function read_data(filename,     i, nameN, namex, rc) {
 
-  while ((getline < filename) > 0) {
+  while ((rc = (getline < filename)) > 0) {
     # clean fields of spaces and NULL symbols
     for (i = 1; i <= NF; i++) {
       gsub(/^(NULL|\\N)$/,"",$i)
       $i = cleanspaces($i)
     }
+    if(rc<0) err_exit(1,ERRNO)
 
     # line number to code:
     C[filename, ++Lines[filename]] = $I_code
@@ -286,7 +287,7 @@ function no_match(code) {
         >> OUTFILE
 }
 
-function test_fuzzy(code, lineno,   i, j, r, found, nfound, mantype) {
+function test_fuzzy(code, lineno,   i, j, r, rc, found, nfound, mantype) {
 
   # Old Agrep method : see commit 18e82ad26f436e1be988102b17680f27906781a5
 
@@ -335,11 +336,13 @@ function test_fuzzy(code, lineno,   i, j, r, found, nfound, mantype) {
     while(1) {
       r = ""
       printf "  > "
-      getline r < "-"
+      rc = (getline r < "-")
 
-      if (r == "q") {
+      if (r == "q" || rc == 0 ) {
         print "Halting... " lineno - 1 " lines of '" Afn "' processed"
         exit 0
+      } else if ( rc == -1 ) {
+        err_exit(1,ERRNO)
       }
       # See the codes being compared
       else if (r == "c") {
@@ -490,3 +493,7 @@ function depunct(x) {
   return x
 }
 
+function err_exit(rc, msg) {
+  printf("matchnames: error(%d): %s\n", rc, msg) > "/dev/stderr"
+  exit(_exit=rc)
+}
