@@ -1,12 +1,6 @@
 prefix = /usr/local
 PREFIX = $(DESTDIR)$(prefix)
 
-aregexversion: matchnames
-	gawk -l aregex --version | sed '/^Copyright/,$$ d'
-	cp matchnames matchnames.ori
-	sed -i -E 's/#@> //g' matchnames
-	sed -i -E 's/^(.*#@<)/#\1/g' matchnames
-
 check: matchnames parsenames test/listA test/listB test/names test/matchnames.ok test/parsenames.ok
 	@./matchnames -a test/listA -b test/listB -o test/out -F
 	@diff test/matchnames.ok test/out && echo '** matchnames PASS **' || echo '** matchnames FAIL **'
@@ -16,7 +10,6 @@ check: matchnames parsenames test/listA test/listB test/names test/matchnames.ok
 	@rm -f test/out
 
 install: matchnames matchnames.awk parsenames share/taxon-tools.awk man
-	#@gawk -l aregex --version > | sed '/^Copyright/,$$ d'
 	mkdir -p $(PREFIX)/bin
 	cp -f matchnames parsenames $(PREFIX)/bin/.
 	mkdir -p $(PREFIX)/share/awk
