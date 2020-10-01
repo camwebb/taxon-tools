@@ -128,7 +128,6 @@ function read_args(    arg) {
     ## changed, for portability to windows
     # system("rm -f " OUTFILE)
     printf "" > OUTFILE
-    close(OUTFILE)
   }
 }
 
@@ -219,12 +218,11 @@ function test_eq(method, code,      outmethod) {
     print code, XC[Bfn, method, X[Afn, method, code]],    \
       outmethod , Data[code] ,                            \
       Data[XC[Bfn, method, X[Afn, method, code]]] >> OUTFILE
-    close(OUTFILE)
     return 1
   }
   else return 0
 }
- 
+
 function test_na(code) {
 
   # if there is a single B code for the A key
@@ -233,7 +231,6 @@ function test_na(code) {
     print code, XC[Bfn, "noauth", X[Afn, "noauth", code]],  \
       "auto_noauth" , Data[code] ,                               \
       Data[XC[Bfn, "noauth", X[Afn, "noauth", code]]] >> OUTFILE
-    close(OUTFILE)
     return 1
   }
   else return 0
@@ -246,7 +243,6 @@ function test_pm(method, code) {
     print code, XC[Bfn, method, X[Afn, "punct", code]],                \
       "auto_" method "-" , Data[code] ,                                \
       Data[XC[Bfn, method, X[Afn, "punct", code]]] >> OUTFILE
-    close(OUTFILE)
     return 1
   }
 
@@ -255,7 +251,6 @@ function test_pm(method, code) {
     print code, XC[Bfn, "punct", X[Afn, method, code]],            \
       "auto_" method "+" , Data[code] ,                            \
       Data[XC[Bfn, "punct", X[Afn, method, code]]] >> OUTFILE
-    close(OUTFILE)
     return 1
   }
   else return 0
@@ -289,7 +284,6 @@ function cleanspaces(x) {
 function no_match(code) {
   print code "||no_match|" Data[code] "|||||||" \
         >> OUTFILE
-  close(OUTFILE)
 }
 
 function test_fuzzy(code, lineno,   i, j, r, found, nfound, mantype) {
@@ -358,7 +352,6 @@ function test_fuzzy(code, lineno,   i, j, r, found, nfound, mantype) {
       #   print code , code_of_j[r], "manual" , Data[ code ], \
       #     Data[code_of_j[r]]                                \
       #     >> OUTFILE
-      #   close(OUTFILE)
       #   break
       # }
       else if (r == "e") break
@@ -370,7 +363,6 @@ function test_fuzzy(code, lineno,   i, j, r, found, nfound, mantype) {
         if (found[r]) {
           print code , found[r], mantype , Data[ code ],    \
             Data[found[r]] >> OUTFILE
-          close(OUTFILE)
           return 1
         }
         else printf "(number not found)\n"
@@ -404,7 +396,6 @@ function test_allfuzzy(code,    i, foundone) {
     #@> if (amatch(X[Bfn,"punct",i], ("^" X[Afn, "punct",code] "$"),FUZZERR)) {
       foundone = 1
       print code , i, "auto_fuzzy" , Data[ code ], Data[i] >> OUTFILE
-      close(OUTFILE)
     }
   }
   if (foundone) return 1
