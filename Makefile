@@ -1,4 +1,5 @@
-PREFIX = /usr/local
+prefix = /usr/local
+PREFIX = $(DESTDIR)$(prefix)
 
 aregexversion: matchnames
 	gawk -l aregex --version | sed '/^Copyright/,$$ d'
@@ -19,7 +20,7 @@ install: matchnames parsenames share/taxon-tools.awk man
 	mkdir -p $(PREFIX)/bin
 	cp -f matchnames parsenames $(PREFIX)/bin/.
 	mkdir -p $(PREFIX)/share/awk
-	cp -f share/taxon-tools.awk $(PREFIX)/share/awk/.
+	cp -f share/taxon-tools.awk $(if $(AWKPATH),$(PREFIX)/share/awk,$(DESTDIR)$(AWKPATH))/.
 	mkdir -p $(PREFIX)/share/man/man1
 	cp -f doc/matchnames.1 $(PREFIX)/share/man/man1/.
 	cp -f doc/parsenames.1 $(PREFIX)/share/man/man1/.
