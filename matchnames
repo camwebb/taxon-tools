@@ -22,7 +22,7 @@
 BEGIN{
   config()
   read_args()
-  
+
   # Read reference names
   read_data(Bfn)
 
@@ -31,7 +31,7 @@ BEGIN{
 
   # Main loop though the lines of input file A
   for (line = 1; line <= Lines[Afn]; line++) {
-    # ac is the given code associated with a name 
+    # ac is the given code associated with a name
     ac = C[Afn, line]
 
     # test for exact string match:
@@ -60,7 +60,7 @@ BEGIN{
 
     # bypass manual when A is 'auct.':
     if (Auct[ac]) {
-      if (CFO) { 
+      if (CFO) {
         if (test_eq("cfonly",    ac)) continue
       }
       else {
@@ -72,7 +72,7 @@ BEGIN{
     # ALL fuzzy matching:
     if (ALLFUZZY && GL[Bfn][G[ac]])
       if (test_allfuzzy(ac)) continue
-    
+
     # fuzzy matching and manual checking:
     if (FUZZY && GL[Bfn][G[ac]])
       if (test_fuzzy(ac, line)) continue
@@ -97,7 +97,7 @@ function config() {
 
   # Column order; same in both files
   I_code = 1 ; I_xg = 2  ; I_g = 3  ; I_xs = 4 ; I_s = 5
-  I_st = 6   ; I_ssp = 7 ; I_a = 8 
+  I_st = 6   ; I_ssp = 7 ; I_a = 8
 }
 
 function read_args(    arg) {
@@ -133,7 +133,7 @@ function read_args(    arg) {
 }
 
 function read_data(filename,     i, nameN, namex) {
-  
+
   while ((getline < filename) > 0) {
     # clean fields of spaces and NULL symbols
     for (i = 1; i <= NF; i++) {
@@ -143,7 +143,7 @@ function read_data(filename,     i, nameN, namex) {
 
     # line number to code:
     C[filename, ++Lines[filename]] = $I_code
-    
+
     # check for duplicate code
     if (++CodeN[$I_code] > 1) {
       print "ID code '" $I_code "' is a duplicate..."
@@ -153,7 +153,7 @@ function read_data(filename,     i, nameN, namex) {
     # For structured output
     Data[$I_code] = $I_xg OFS $I_g OFS $I_xs OFS $I_s OFS \
       $I_st OFS $I_ssp OFS $I_a
-    
+
     # "exact" string for manual string matching
     X[filename, "exact", $I_code] = cleanspaces($I_xg " " $I_g " " $I_xs " "  \
            $I_s " " $I_st " " $I_ssp " " $I_a)
@@ -164,7 +164,7 @@ function read_data(filename,     i, nameN, namex) {
         "' is a duplicate..."
       exit 1
     }
-    
+
     namex = $I_xg $I_g $I_xs $I_s $I_st $I_ssp
 
     # NB: using computed regex here, less efficient, but tidier code
@@ -173,15 +173,15 @@ function read_data(filename,     i, nameN, namex) {
 
     # plain depunct no author
     if (!$I_a) NA[$I_code] = 1
-    apply_regex(filename, $I_code, namex, "", "noauth", "") 
+    apply_regex(filename, $I_code, namex, "", "noauth", "")
     XNA[filename, X[filename, "noauth", $I_code]]++
 
     # plain depunct no author no subtype no hybrid marks
-    apply_regex(filename, $I_code, ($I_g $I_s $I_ssp), "", "cfonly", "") 
+    apply_regex(filename, $I_code, ($I_g $I_s $I_ssp), "", "cfonly", "")
 
     # plain depunct no subtype 2019-05-14: included auth string
     apply_regex(filename, $I_code, ($I_xg $I_g $I_xs $I_s $I_ssp $I_a), "", \
-                "irank", "") 
+                "irank", "")
 
     # depunct, with basionym removed
     apply_regex(filename, $I_code, namex, $I_a, "basio", "^\\([^)]+\\)")
@@ -249,7 +249,7 @@ function test_pm(method, code) {
     close(OUTFILE)
     return 1
   }
-  
+
   # if there is a collapsed B code for the A key
   else if (XC[Bfn, "punct", X[Afn, method, code]]) {
     print code, XC[Bfn, "punct", X[Afn, method, code]],            \
@@ -274,7 +274,7 @@ function apply_regex(AB, code, name, auth, method, regex,   i) {
     # inefficient, but seldom called
     for (i in CodeN)
       if ((X[AB, method, i] == X[AB, method, code]) && (i != code))
-        print "   with: " i 
+        print "   with: " i
   }
 }
 
@@ -305,10 +305,10 @@ function test_fuzzy(code, lineno,   i, j, r, found, nfound, mantype) {
       found[++nfound] = i
   }
   # Todo, add another array and sort it: the potential matches are in order
-  
-  # If there was an match, list match(s)  
+
+  # If there was an match, list match(s)
   if (nfound) {
-  
+
     # catch and remove cases of only one agrep match,
     #       and remove cases when one is a sp and one is subsp,
     if (nfound == 1) {
@@ -327,7 +327,7 @@ function test_fuzzy(code, lineno,   i, j, r, found, nfound, mantype) {
     printf "------------------------------------"     \
       "------------------- %-10s--(%4d/%4d)\n", code, lineno, Lines[Afn]
     printf "    %s\n", X[Afn, "exact", code]
-    
+
     # for (j = 1; j <= na; j++) {
     #   split(a[j],b," ")
     #   printf "%2d: %s\n", j, X[Bfn, "exact", XC[Bfn,"punct", b[2]]]
@@ -336,15 +336,15 @@ function test_fuzzy(code, lineno,   i, j, r, found, nfound, mantype) {
 
     for (j = 1; j <= nfound; j++)
       printf "%2d: %s\n", j, X[Bfn, "exact", found[j]]
-      
+
     # Begin user input
     while(1) {
       r = ""
       printf "  > "
       getline r < "-"
-      
+
       if (r == "q") {
-        print "Halting... " lineno - 1 " lines of '" Afn "' processed" 
+        print "Halting... " lineno - 1 " lines of '" Afn "' processed"
         exit 0
       }
       # See the codes being compared
@@ -415,7 +415,7 @@ function test_allfuzzy(code,    i, foundone) {
 function levenshtein(i1, i2,    \
          s1, s2, s1len, s2len, x, y, lastdiag, olddiag, column) {
   # Returns the Levenshtein distance between two strings, with insert, delete
-  #   and substitute costs of 1. 
+  #   and substitute costs of 1.
   # Adapted from the C code at: https://en.wikibooks.org/w/index.php?\
   #   title=Algorithm_Implementation/Strings/Levenshtein_distance
 
@@ -450,7 +450,7 @@ function depunct(x) {
   # History:
   #  The master copy of this library was in share/taxon-tools.awk
   #  2020-07-27: copied directly here. Unchanged.
-  
+
   # See here for data:
   # https://code.activestate.com/recipes/251871-latin1-to-ascii-the-
   #   unicode-hammer/
