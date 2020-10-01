@@ -1,29 +1,24 @@
-PREFIX = /usr/local
-
-aregexversion: matchnames
-	bash -lc 'IFS=":" ; for p in $$AWKLIBPATH ; do if [ -f $${p}/aregex.so ] ; then FOUND="1" ; fi ; done ; if [ -z $$FOUND ] ; then echo "** aregex.so not found in AWKLIBPATH **" && exit 1 ; fi '
-	cp matchnames matchnames.ori
-	sed -i -E 's/#@> //g' matchnames
-	sed -i -E 's/^(.*#@<)/#\1/g' matchnames
+prefix = /usr/local
+PREFIX = $(DESTDIR)$(prefix)
 
 check: matchnames parsenames test/listA test/listB test/names test/matchnames.ok test/parsenames.ok
 	@./matchnames -a test/listA -b test/listB -o test/out -F
-	@bash -c "if [ `diff test/matchnames.ok test/out | wc | gawk '{print $$1}'` -eq 0 ] ; then echo '** matchnames PASS **'; else echo '** matchnames FAIL **' ; fi "
+	@diff test/matchnames.ok test/out && echo '** matchnames PASS **' || echo '** matchnames FAIL **'
 	@rm -f test/out
 	@cat test/names | ./parsenames > test/out
-	@bash -c "if [ `diff test/parsenames.ok test/out | wc | gawk '{print $$1}'` -eq 0 ] ; then echo '** parsenames PASS **'; else echo '** parsenames FAIL **' ; fi "
+	@diff test/parsenames.ok test/out && echo '** parsenames PASS **' || echo '** parsenames FAIL **'
 	@rm -f test/out
 
-install: matchnames parsenames share/taxon-tools.awk man
-	# bash -lc 'IFS=":" ; for p in $$AWKLIBPATH ; do if [ -f $${p}/aregex.so ] ; then FOUND="1" ; fi ; done ; if [ -z $$FOUND ] ; then echo "** aregex.so not found in AWKLIBPATH **" && exit 1 ; fi '
+install: matchnames matchnames.awk parsenames share/taxon-tools.awk man
 	mkdir -p $(PREFIX)/bin
 	cp -f matchnames parsenames $(PREFIX)/bin/.
 	mkdir -p $(PREFIX)/share/awk
-	cp -f share/taxon-tools.awk $(PREFIX)/share/awk/.
+	cp -f {matchnames.awk,share/taxon-tools.awk} $(if $(AWKPATH),$(PREFIX)/share/awk,$(DESTDIR)$(AWKPATH))/.
 	mkdir -p $(PREFIX)/share/man/man1
 	cp -f doc/matchnames.1 $(PREFIX)/share/man/man1/.
 	cp -f doc/parsenames.1 $(PREFIX)/share/man/man1/.
 
-man: doc/matchnames.md doc/parsenames.md
-	pandoc -s -t man -o doc/matchnames.1 doc/matchnames.md
-	pandoc -s -t man -o doc/parsenames.1 doc/parsenames.md
+PHONY: man
+man: doc/matchnames.1 doc/parsenames.1
+%.1: %.md
+	pandoc --eol=lf -s -t man -o $@ $<
