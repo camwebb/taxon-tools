@@ -22,7 +22,9 @@ function parse_taxon_name(name, test,    parsed, p, remade) {
 
   # Note: gawk's [:alpha:] shortens this Author string:
   #   [A-za-z\- ().&;,ÁÅäáâăÉéèěíîíıÖØöóöòøôÜüČçćčğłñńřŞšșțýž']
-
+  # Note (2021-08-19): if the diacritic is a Unicode COMBINING accent, the
+  #   [:alpha:] fails. Need to be added manual. Extra (redundent) spaces are
+  #   combined with the COMBINING chars to make the regex more readable
   
   # Clean bad chars:
   gsub(/[¿\/"]/,"",name)
@@ -31,8 +33,8 @@ function parse_taxon_name(name, test,    parsed, p, remade) {
 
   # Use unwrapped/long lines to view regex structure (M-x toggle-truncate-lines)
   #                 ( ×    )   ( genus 2+   )   ( ×    )   ( species 2+      )    ( rank                                                                           )    ( infrasp  )    ( author string           )
-  parsed = gensub(/^([×xX]?) ?([A-Z][a-zë-]+) ?([×xX]? |[×X]?) ?([a-z\-ﬂ][a-z\-ﬂ]+)? ?(var\.|f\.|forma|taxon|fo\.|subsp\.|prol\.|nothovar\.|lus\.|\[infrasp\.unranked\])? ?([a-z\-ﬂ_]+)? ?([- \[\]().&;,’'[:alnum:]]+)?$/, "\\1|\\2|\\3|\\4|\\5|\\6|\\7", "G", name);
-
+  # parsed = gensub(/^([×xX]?) ?([A-Z][a-zë-]+) ?([×xX]? |[×X]?) ?([a-z\-ﬂ][a-z\-ﬂ]+)? ?(var\.|f\.|forma|taxon|fo\.|subsp\.|prol\.|nothovar\.|lus\.|\[infrasp\.unranked\])? ?([a-z\-ﬂ_]+)? ?([- \[\]().&;,’'[:alnum:]]+)?$/, "\\1|\\2|\\3|\\4|\\5|\\6|\\7", "G", name);
+  parsed = gensub(/^([×xX]?) ?([A-Z][a-zë-]+) ?([×xX]? |[×X]?) ?([a-z\-ﬂ][a-z\-ﬂ]+)? ?(var\.|f\.|forma|subf\.|taxon|fo\.|subsp\.|prol\.|nothovar\.|lus\.|\[infrasp\.unranked\])? ?([a-z\-ﬂ_]+)? ?([- \[\]().&;,’'[:alnum:]́ ̀ ]+)?$/, "\\1|\\2|\\3|\\4|\\5|\\6|\\7", "G", name);
   
   # issue with 'Genus xspecies': 'Genus xanthophylla' becomes a hybrid
   gsub(/ *\|/,"|",parsed)
