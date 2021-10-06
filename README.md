@@ -141,3 +141,7 @@ Then match the names:
     cat matchedA
     x-234|y-235|manual||Foogenus|×|barspecies|var.|foosubsp|(L.) F. Bar|\
       |Foogenus|×|barspcies|var.|foosubsp|(L.) F. Bar
+
+## Downstream
+
+`taxon-tools` is being used in an R package: `[taxastand](https://github.com/joelnitta/taxastand)`
