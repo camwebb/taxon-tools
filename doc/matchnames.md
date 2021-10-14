@@ -45,8 +45,9 @@ matching.
 matching. All fuzzy matches are included in the output.
 
 -e
-: Max Levenshtein distance to allow during fuzzy matching. Default: 10
-total insertions, deletions and substitutions.
+: Maximum Levenshtein distance to allow during fuzzy matching of whole
+name string. Default: 10 total insertions, deletions and
+substitutions.
 
 -1
 : If no author is given in list A and the name (without author) occurs
