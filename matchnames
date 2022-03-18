@@ -324,7 +324,7 @@ function test_fuzzy(code, lineno,   i, j, r, found, nfound, mantype) {
       }
     }
 
-    printf "------------------------------------"     \
+    printf "-------------------------------"     \
       "------------------- %-10s--(%4d/%4d)\n", code, lineno, Lines[Afn]
     printf "    %s\n", X[Afn, "exact", code]
     
