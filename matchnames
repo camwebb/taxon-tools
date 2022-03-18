@@ -406,8 +406,8 @@ function test_fuzzy(code, lineno,   i, j, r, found, nfound, mantype, \
           recorderline = recorderline found[j] "^"
         gsub(/\^$/,"", recorderline)
         recorderline = recorderline "||no_match"
-        print recorderline >> "manual_choices"
-        close("manual_choices")
+        print recorderline >> ( OUTFILE "_manual" )
+        close(OUTFILE "_manual")
 
         break
       }
@@ -427,8 +427,8 @@ function test_fuzzy(code, lineno,   i, j, r, found, nfound, mantype, \
             recorderline = recorderline found[j] "^"
           gsub(/\^$/,"", recorderline)
           recorderline = recorderline "|" found[r] "|" mantype
-          print recorderline >> "manual_choices"
-          close("manual_choices")
+          print recorderline >> ( OUTFILE "_manual" )
+          close(OUTFILE "_manual")
 
           return 1
         }
