@@ -9,7 +9,7 @@ matchnames - matches two lists of taxonomic names
 # SYNOPSIS
 
 matchnames -a query_names_file -b ref_names_file -o outfile \
-            [ -f | -F [ -e fuzzy_error ]] [ -1 -c -n -q ]
+            [ -f | -F [ -e fuzzy_error ]] [ -1 -c -n -q ] [ -m manual_choices ]
 
 # DESCRIPTION
 
@@ -63,6 +63,9 @@ allow such a match.
 
 -q
 : Quiet
+
+-m
+: File name of a record of previous choices, by default `manual_choices`
 
 # FILE FORMATS
 
@@ -209,6 +212,17 @@ Reject the match (**no_match**):
  3. When the query name is of species rank and the reference name of
  infraspecific rank, or vice versa.
  4. If the query name is followed by “auct.”
+
+## Recording of manual choices
+
+Since the manual phase is time-consuming and labor-intensive, and
+because the same or similar input lists may be needed to be compared
+numerous times, prior choices are recorded in a file
+(`manual_choices`) and can be “played back” by using the `-d`
+option. When the proffered name options are exactly the same (though
+not necessarily in the same order), the operator will not need to
+re-choose and the prior manual choice will be inserted into the output
+file.
 
 # SEE ALSO
 
