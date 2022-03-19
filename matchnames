@@ -367,10 +367,10 @@ function test_fuzzy(code, lineno,   i, j, r, found, nfound, mantype, \
         return 1
       }
     }
-    
-    printf "-------------------------------"                        \
-      "------------- %-20s--(%4d/%4d)\n", code, lineno, Lines[Afn]
-    printf "    %s\n", X[Afn, "exact", code]
+
+    printf "\x1b[38;5;8m-------------------------------"                \
+      "------------- %-20s--(%4d/%4d)\x1b[0;m\n", code, lineno, Lines[Afn]
+    printf "\x1b[38;5;11m    %s\x1b[0;m\n", X[Afn, "exact", code]
     
     # for (j = 1; j <= na; j++) {
     #   split(a[j],b," ")

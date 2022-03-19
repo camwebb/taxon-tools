@@ -224,6 +224,12 @@ not necessarily in the same order), the operator will not need to
 re-choose and the prior manual choice will be inserted into the output
 file.
 
+Note that if the recording file is used with changed input lists that
+offers different options, a second line will be appended that has a
+duplicate key in the first column. The first occurrence of this key
+must then be remove ‘manually’. This can be done with sed:
+`sed -i '0,/key123/ {/key123/d}' ..._manual`.
+
 # SEE ALSO
 
 **parsenames**(1), **parse_taxon_name**(3), <https://en.wikipedia.org/wiki/Author_citation_(botany)>, <http://alaskaflora.org/pages/blog3.html>
