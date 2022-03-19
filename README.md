@@ -26,7 +26,9 @@ fuzzy matches (`levenstein()`; **the default**), or ii) the external
 part of the `gawkextlib` project. The latter is ~8 times faster (e.g.,
 4.2 s vs. 35.3 s on a no-user-input fuzzy match (`-F`) with the `-a`
 file of 2,823 lines and the `-b` file of 19,435 lines, fuzzy error of
-5), but less portable and longer to install.  
+5), but less portable and longer to install.  Note that the matching
+results may differ slightly between the two methods for a given value
+of `-e`.
 
 ### `parsenames`
 

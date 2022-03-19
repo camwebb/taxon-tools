@@ -1,6 +1,6 @@
 % MATCHNAMES(1) taxon-tools version 1.1 | Taxon-tools manual
 % 
-% Jun 04 2020
+% Mar 18 2022
 
 # NAME
 
@@ -234,7 +234,7 @@ Cam Webb <cw@camwebb.info>
 
 # COPYING PERMISSIONS
 
-Due to the GPL license off the `gawkextlib` dependency, this program
+Due to the GPL license of the `gawkextlib` dependency, this program
 is released under the GPL 3.0.
 
 Copyright © 2018, Campbell O. Webb

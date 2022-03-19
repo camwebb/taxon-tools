@@ -161,8 +161,8 @@ function read_data(filename,     i, nameN, namex) {
     C[filename, ++Lines[filename]] = $I_code
     
     # check for duplicate code
-    if (++CodeN[$I_code] > 1) {
-      print "ID code '" $I_code "' is a duplicate..."
+    if (++CodeN[filename][$I_code] > 1) {
+      print "ID code '" $I_code "' in file '" filename "' is a duplicate..."
       exit 1
     }
 
@@ -231,9 +231,10 @@ function test_eq(method, code,      outmethod) {
 
   outmethod = method == "exact" ? "exact" : ( "auto_" method )
   # if there is a B code for the A key, using the same method
-  if (XC[Bfn, method, X[Afn, method, code]]) {
-    print code, XC[Bfn, method, X[Afn, method, code]],    \
-      outmethod , Data[code] ,                            \
+  if ((XC[Bfn, method, X[Afn, method, code]]) &&            \
+      (code != XC[Bfn, method, X[Afn, method, code]]))    {
+        print code, XC[Bfn, method, X[Afn, method, code]],      \
+          outmethod , Data[code] ,                              \
       Data[XC[Bfn, method, X[Afn, method, code]]] >> OUTFILE
     close(OUTFILE)
     return 1
@@ -245,8 +246,9 @@ function test_na(code) {
 
   # if there is a single B code for the A key
   if ((XC[Bfn, "noauth", X[Afn, "noauth", code]]) &&        \
-      XNA[Bfn, X[Afn, "noauth", code]] == 1) {
-    print code, XC[Bfn, "noauth", X[Afn, "noauth", code]],  \
+      (XNA[Bfn, X[Afn, "noauth", code]] == 1)     &&        \
+      (code != XC[Bfn, "noauth", X[Afn, "noauth", code]])) {
+    print code, XC[Bfn, "noauth", X[Afn, "noauth", code]],       \
       "auto_noauth" , Data[code] ,                               \
       Data[XC[Bfn, "noauth", X[Afn, "noauth", code]]] >> OUTFILE
     close(OUTFILE)
@@ -258,7 +260,8 @@ function test_na(code) {
 function test_pm(method, code) {
   # pm = 'plus/minus'
   # if there is a B code for the collapsed A key
-  if (XC[Bfn, method, X[Afn, "punct", code]]) {
+  if ((XC[Bfn, method, X[Afn, "punct", code]]) &&               \
+      (code != XC[Bfn, method, X[Afn, "punct", code]]))    {
     print code, XC[Bfn, method, X[Afn, "punct", code]],                \
       "auto_" method "-" , Data[code] ,                                \
       Data[XC[Bfn, method, X[Afn, "punct", code]]] >> OUTFILE
@@ -267,7 +270,8 @@ function test_pm(method, code) {
   }
   
   # if there is a collapsed B code for the A key
-  else if (XC[Bfn, "punct", X[Afn, method, code]]) {
+  else if ((XC[Bfn, "punct", X[Afn, method, code]]) &&          \
+           (code != XC[Bfn, "punct", X[Afn, method, code]])) {
     print code, XC[Bfn, "punct", X[Afn, method, code]],            \
       "auto_" method "+" , Data[code] ,                            \
       Data[XC[Bfn, "punct", X[Afn, method, code]]] >> OUTFILE
@@ -317,9 +321,11 @@ function test_fuzzy(code, lineno,   i, j, r, found, nfound, mantype, \
   nfound = 0
   # for each B file code present in the same genus as (A) code
   for (i in Gh[Bfn][G[code]]) {
-    if (levenshtein(X[Bfn,"punct",i], X[Afn,"punct",code]) <= FUZZERR) #@<
-    #@> if (amatch(X[Bfn,"punct",i], ("^" X[Afn,"punct",code] "$"),FUZZERR))
-      found[++nfound] = i
+    if (i != code) {
+      if (levenshtein(X[Bfn,"punct",i], X[Afn,"punct",code]) <= FUZZERR) #@<
+      #@> if (amatch(X[Bfn,"punct",i], ("^" X[Afn,"punct",code] "$"),FUZZERR))
+        found[++nfound] = i
+    }
   }
   # Todo, add another array and sort it: the potential matches are in order
   
@@ -455,15 +461,17 @@ function test_fuzzy(code, lineno,   i, j, r, found, nfound, mantype, \
 }
 
 function test_allfuzzy(code,    i, foundone) {
-  # Return all fuzzy matches
+  # Return all fuzzy matches; output file may have more lines that listA
 
   # for each B file code present in the same genus as (A) code
   for (i in Gh[Bfn][G[code]]) {
-    if (levenshtein(X[Bfn,"punct",i], X[Afn,"punct",code]) <= FUZZERR) { #@<
-    #@> if (amatch(X[Bfn,"punct",i], ("^" X[Afn, "punct",code] "$"),FUZZERR)) {
-      foundone = 1
-      print code , i, "auto_fuzzy" , Data[ code ], Data[i] >> OUTFILE
-      close(OUTFILE)
+    if (i != code ) {
+      if (levenshtein(X[Bfn,"punct",i], X[Afn,"punct",code]) <= FUZZERR) { #@<
+      #@> if (amatch(X[Bfn,"punct",i], ("^" X[Afn, "punct",code] "$"),FUZZERR)) {
+        foundone = 1
+        print code , i, "auto_fuzzy" , Data[ code ], Data[i] >> OUTFILE
+        close(OUTFILE)
+      }
     }
   }
   if (foundone) return 1
