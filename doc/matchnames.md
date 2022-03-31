@@ -227,8 +227,10 @@ file.
 Note that if the recording file is used with changed input lists that
 offers different options, a second line will be appended that has a
 duplicate key in the first column. The first occurrence of this key
-must then be remove ‘manually’. This can be done with sed:
-`sed -i '0,/key123/ {/key123/d}' ..._manual`.
+must then be remove ‘manually’. This can be done with sed: `sed -i
+'0,/key123/ {/key123/d}' ..._manual`. A cleanup script can be made
+with `gawk 'BEGIN{FS="|"} {n[$1]++} END{for(i in n) if (n[i]>1) print
+"sed -i \"0,/" i "/ {/" i "/d}\" " FILENAME}' ..._manual`.
 
 # SEE ALSO
 

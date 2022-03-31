@@ -144,6 +144,20 @@ Then match the names:
     x-234|y-235|manual||Foogenus|×|barspecies|var.|foosubsp|(L.) F. Bar|\
       |Foogenus|×|barspcies|var.|foosubsp|(L.) F. Bar
 
+## Citation
+
+```
+@Misc{webb2022mat,
+  author =    {Webb, C. O.},
+  title =     {Matchnames: joining biological name lists using
+               taxonomic logic and approximate string matching},
+  note =      {Version 1.3.0},
+  year =      {2022},
+  url  =      {https://github.com/camwebb/taxon-tools/},
+  doi  =      {10.5281/zenodo.6402523}
+}
+```
+
 ## Downstream
 
 `taxon-tools` is being used in an R package: [`taxastand`](https://github.com/joelnitta/taxastand)
