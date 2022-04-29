@@ -118,6 +118,12 @@ directory, `copy`, `more` = see file contents.
     dir
     more out.txt
 
+### Docker
+
+See [Repo](https://hub.docker.com/r/camwebb/taxon-tools) on Docker Hub.
+
+    docker pull camwebb/taxon-tools
+
 ## Running the programs
 
 If needed, parse names first:
