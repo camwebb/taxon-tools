@@ -160,4 +160,6 @@ Then match the names:
 
 ## Downstream
 
-`taxon-tools` is being used in an R package: [`taxastand`](https://github.com/joelnitta/taxastand)
+ * `taxon-tools` is being used in an R package: [`taxastand`](https://github.com/joelnitta/taxastand)
+ * `taxon-tools` now has a [Docker image](https://hub.docker.com/repository/docker/camwebb/taxon-tools)
+ 
