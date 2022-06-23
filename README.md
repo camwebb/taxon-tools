@@ -139,7 +139,7 @@ If needed, parse names first:
 
 Then match the names:
 
-    matchnames -a listA -b listB -o matchedA -F -q
+    matchnames -a listA -b listB -o matchedA -f -q
     ------------------------------------------------------- x-234 --( 1/ 1)
        Foogenus × barspecies var. foosubsp (L.) F. Bar
     1: Foogenus × barspcies var. foosubsp (L.) F. Bar
@@ -149,6 +149,15 @@ Then match the names:
     cat matchedA
     x-234|y-235|manual||Foogenus|×|barspecies|var.|foosubsp|(L.) F. Bar|\
       |Foogenus|×|barspcies|var.|foosubsp|(L.) F. Bar
+
+## Tips for usage
+
+ * If you make a mistake during manual matching and catch it after the
+   wrong choice has been entered, just jot down the code of the A list
+   entry. At the end of the run, edit the `..._manual` file to remove
+   that entry and rerun the program. You will be presented with that
+   choice again, along with choices for any other errors you may have
+   made.
 
 ## Citation
 
