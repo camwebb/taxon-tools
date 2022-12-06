@@ -122,7 +122,7 @@ directory, `copy`, `more` = see file contents.
 
 See [Repo](https://hub.docker.com/r/camwebb/taxon-tools) on Docker Hub.
 
-    docker pull camwebb/taxon-tools
+    docker pull camwebb/taxon-tools:v1.3.0
 
 ## Running the programs
 
